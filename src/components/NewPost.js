@@ -1,10 +1,14 @@
 import {
   Box,
   Button,
+  FormControl,
+  InputLabel,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  MenuItem,
   Modal,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -18,8 +22,12 @@ const StyledModal = styled(Modal)({
   justifyContent: "center",
 });
 
-function NewPost() {
+function NewPost({ onSubmitNewPost }) {
   const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [text, setText] = useState("");
+  const [category, setCategory] = useState("");
+
   const openHandler = (event) => {
     setOpen(true);
   };
@@ -27,13 +35,31 @@ function NewPost() {
     setOpen(false);
   };
 
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
+    onSubmitNewPost({ category, title, text });
+    setTitle("");
+    setText("");
+    setCategory("");
+    setOpen(false);
+  };
+  const titleChangeHandler = (event) => {
+    setTitle(event.target.value);
+  };
+  const categoryChangeHandler = (event) => {
+    setCategory(event.target.value);
+  };
+  const textChangeHandler = (event) => {
+    setText(event.target.value);
+  };
+
   return (
     <>
       <ListItemButton onClick={openHandler}>
         <ListItemIcon>
-          <AddIcon fontSize="large"/>
+          <AddIcon fontSize="large" />
         </ListItemIcon>
-        <ListItemText primary="Create a Post" />
+        <ListItemText primary="New Post" sx={{ display: { sm: "none", md: "block" } }}/>
       </ListItemButton>
       <StyledModal
         open={open}
@@ -41,33 +67,61 @@ function NewPost() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box
-          width={500}
-          height={400}
-          bgcolor="white"
-          padding={3}
-          borderRadius={5}
-        >
-          <Typography variant="h6" color="gray" textAlign="center">
-            Create a Post
-          </Typography>
-          <TextField
-            required
-            fullWidth
-            margin="dense"
-            label="Title"
-            placeholder="Your title here..."
-          />
-          <TextField
-            fullWidth
-            margin="dense"
-            label="Text (optional)"
-            multiline
-            minRows={4}
-            maxRows={8}
-          />
-          <Button fullWidth variant="contained" sx={{margin:"10px 0"}}>Post</Button>
-        </Box>
+        <form onSubmit={formSubmitHandler}>
+          <Box
+            width={500}
+            height={400}
+            bgcolor="white"
+            padding={3}
+            borderRadius={5}
+          >
+            <Typography variant="h6" color="gray" textAlign="center">
+              Create a Post
+            </Typography>
+            <FormControl sx={{ minWidth: 120 }} size="small" margin="dense">
+              <InputLabel id="demo-select-small">Category</InputLabel>
+              <Select
+                fullWidth
+                labelId="demo-select-small"
+                id="demo-select-small"
+                value={category}
+                label="Category"
+                onChange={categoryChangeHandler}
+              >
+                <MenuItem value="School">School</MenuItem>
+                <MenuItem value="Work">Work</MenuItem>
+                <MenuItem value="Play">Others</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              required
+              fullWidth
+              margin="dense"
+              label="Title"
+              placeholder="Your title here..."
+              value={title}
+              onChange={titleChangeHandler}
+            />
+            <TextField
+              fullWidth
+              margin="dense"
+              label="Text (optional)"
+              multiline
+              minRows={4}
+              maxRows={8}
+              value={text}
+              onChange={textChangeHandler}
+            />
+            <Button
+              onClick={formSubmitHandler}
+              fullWidth
+              variant="contained"
+              sx={{ margin: "10px 0" }}
+            >
+              Post
+            </Button>
+          </Box>
+        </form>
       </StyledModal>
     </>
   );
