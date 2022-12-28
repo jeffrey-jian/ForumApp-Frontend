@@ -9,20 +9,18 @@ import {
   Collapse,
   FormLabel,
   IconButton,
-  InputAdornment,
   List,
-  TextField,
   Typography,
 } from "@mui/material";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import SubmitIcon from "@mui/icons-material/SendRounded";
+// import CommentIcon from '@mui/icons-material/CommentOutlined';
 import { grey, red } from "@mui/material/colors";
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import CommentCard from "./CommentCard";
-import { Box } from "@mui/system";
+import NewCommentCard from "./NewCommentCard";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -37,22 +35,11 @@ const ExpandMore = styled((props) => {
 
 function FeedCard({ item }) {
   const [expanded, setExpanded] = useState(false);
-  const [comment, setComment] = useState("");
 
   const expandClickHandler = () => {
     setExpanded(!expanded);
   };
-
-  const commentChangeHandler = (event) => {
-    setComment(event.target.value);
-  };
-
-  const commentSubmitHandler = (event) => {
-    event.preventDefault();
-    console.log("Comment:", { comment });
-    setComment("");
-  };
-
+  const id = item.id;
   const title = item.title;
   const text = item.text;
   const category = item.category;
@@ -83,12 +70,7 @@ function FeedCard({ item }) {
             // onChange=todo
           />
         </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={expandClickHandler}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
+        <ExpandMore expand={expanded} onClick={expandClickHandler}>
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
@@ -100,29 +82,7 @@ function FeedCard({ item }) {
       >
         <List sx={{ margin: "10px" }}>
           {commentsList}
-          <Box sx={{ bgcolor: "white" }}>
-            <form onSubmit={commentSubmitHandler}>
-              <TextField
-                placeholder="Your comment here..."
-                value={comment}
-                onChange={commentChangeHandler}
-                sx={{
-                  width: "95%",
-                  padding: "10px",
-                  bgcolor: "background.paper",
-                }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={commentSubmitHandler}>
-                        <SubmitIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </form>
-          </Box>
+          <NewCommentCard post_id={id}/>
         </List>
       </Collapse>
     </Card>

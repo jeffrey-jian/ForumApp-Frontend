@@ -15,6 +15,8 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import styled from "@emotion/styled";
+import { useDispatch, useSelector } from "react-redux";
+import { changeCategory, changeTitle, changeText, addPost } from "../store";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -22,12 +24,29 @@ const StyledModal = styled(Modal)({
   justifyContent: "center",
 });
 
-function NewPost({ onSubmitNewPost }) {
-  const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
-  const [category, setCategory] = useState("");
+function NewPost() {
+  const dispatch = useDispatch();
 
+  const { author_id, category, title, text } = useSelector((state) => {
+    return {
+      author_id: state.currentUser.id,
+      category: state.newPost.category,
+      title: state.newPost.title,
+      text: state.newPost.text,
+    };
+  });
+  const categoryChangeHandler = (event) => {
+    dispatch(changeCategory(event.target.value));
+  };
+  const titleChangeHandler = (event) => {
+    dispatch(changeTitle(event.target.value));
+  };
+  const textChangeHandler = (event) => {
+    dispatch(changeText(event.target.value));
+  };
+  const isValid = category !== "" && title !== "";
+
+  const [open, setOpen] = useState(false);
   const openHandler = (event) => {
     setOpen(true);
   };
@@ -37,20 +56,33 @@ function NewPost({ onSubmitNewPost }) {
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
-    onSubmitNewPost({ category, title, text });
-    setTitle("");
-    setText("");
-    setCategory("");
+    dispatch(
+      addPost({
+        author_id,
+        date_created: "30 February 2023",
+        category,
+        title,
+        text,
+        comments: [
+          {
+            id: "1",
+            author_id: "Test Author 2",
+            date_created: "31 February 2023",
+            text: "This is a comment. The length of this comment is rather short.",
+          },
+          {
+            id: "2",
+            author_id: "Test Author 2",
+            date_created: "31 February 2023",
+            text: "This is a comment. The length of this comment is rather long. This is a comment. The length of this comment is rather long.",
+          },
+        ],
+      })
+    );
+    dispatch(changeCategory(""));
+    dispatch(changeTitle(""));
+    dispatch(changeText(""));
     setOpen(false);
-  };
-  const titleChangeHandler = (event) => {
-    setTitle(event.target.value);
-  };
-  const categoryChangeHandler = (event) => {
-    setCategory(event.target.value);
-  };
-  const textChangeHandler = (event) => {
-    setText(event.target.value);
   };
 
   return (
@@ -59,31 +91,28 @@ function NewPost({ onSubmitNewPost }) {
         <ListItemIcon>
           <AddIcon fontSize="large" />
         </ListItemIcon>
-        <ListItemText primary="New Post" sx={{ display: { sm: "none", md: "block" } }}/>
+        <ListItemText
+          primary="New Post"
+          sx={{ display: { sm: "none", md: "block" } }}
+        />
       </ListItemButton>
-      <StyledModal
-        open={open}
-        onClose={closeHandler}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <form onSubmit={formSubmitHandler}>
-          <Box
-            width={500}
-            height={400}
-            bgcolor="white"
-            padding={3}
-            borderRadius={5}
-          >
-            <Typography variant="h6" color="gray" textAlign="center">
-              Create a Post
-            </Typography>
+      <StyledModal open={open} onClose={closeHandler}>
+        <Box
+          width={500}
+          height={400}
+          bgcolor="white"
+          padding={3}
+          borderRadius={5}
+        >
+          <Typography variant="h6" color="gray" textAlign="center">
+            Create a Post
+          </Typography>
+          <form>
             <FormControl sx={{ minWidth: 120 }} size="small" margin="dense">
-              <InputLabel id="demo-select-small">Category</InputLabel>
+              <InputLabel id="category">Category</InputLabel>
               <Select
                 fullWidth
-                labelId="demo-select-small"
-                id="demo-select-small"
+                labelId="category"
                 value={category}
                 label="Category"
                 onChange={categoryChangeHandler}
@@ -114,14 +143,15 @@ function NewPost({ onSubmitNewPost }) {
             />
             <Button
               onClick={formSubmitHandler}
+              disabled={!isValid}
               fullWidth
               variant="contained"
               sx={{ margin: "10px 0" }}
             >
               Post
             </Button>
-          </Box>
-        </form>
+          </form>
+        </Box>
       </StyledModal>
     </>
   );
