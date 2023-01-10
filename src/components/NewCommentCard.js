@@ -20,10 +20,12 @@ function NewCommentCard({ post_id }) {
     event.preventDefault();
     dispatch(
       addComment({
-        post_id,
-        author_id,
-        date_created: "32 February 2023",
-        text: comment,
+        data: {
+          post_id,
+          author_id,
+          date_created: "32 February 2023",
+          text: comment,
+        },
       })
     );
     dispatch(changeCommentText(""));

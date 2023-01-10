@@ -16,11 +16,14 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 // import CommentIcon from '@mui/icons-material/CommentOutlined';
-import { grey, red } from "@mui/material/colors";
+import { grey, purple, red } from "@mui/material/colors";
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import CommentCard from "./CommentCard";
 import NewCommentCard from "./NewCommentCard";
+
+
+import { useFetchCommentsQuery } from "../store";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -34,25 +37,36 @@ const ExpandMore = styled((props) => {
 }));
 
 function FeedCard({ item }) {
+  const { data, error, isLoading } = useFetchCommentsQuery(item);
+
+  console.log(data ,error, isLoading);
+
   const [expanded, setExpanded] = useState(false);
 
   const expandClickHandler = () => {
     setExpanded(!expanded);
   };
   const id = item.id;
+  // const initial = item.author_id; // to be reconfigured
   const title = item.title;
-  const text = item.text;
+  const text = item.post_text;
   const category = item.category;
-  const comments = item.comments;
 
-  const commentsList = comments.map((comment) => (
-    <CommentCard key={comment.id} comment={comment} />
-  ));
+  var commentsList;
+  if (isLoading) {
+    commentsList = <div>Loading comments...</div>
+  } else if (error) {
+    commentsList = <div>Error loading comments.</div>
+  } else {
+    commentsList = data.payload.data.map((comment) => (
+      <CommentCard key={comment.id} comment={comment} />
+    ));
+  }
 
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
-        avatar={<Avatar sx={{ bgcolor: red[500] }}>R</Avatar>}
+        avatar={<Avatar sx={{ bgcolor: purple[500] }}>M</Avatar>}
         title={title}
         subheader={category}
       />

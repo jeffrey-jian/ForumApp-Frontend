@@ -57,7 +57,7 @@ function NewPost() {
   const formSubmitHandler = (event) => {
     event.preventDefault();
     dispatch(
-      addPost({
+      addPost({data:{
         author_id,
         date_created: "30 February 2023",
         category,
@@ -77,7 +77,7 @@ function NewPost() {
             text: "This is a comment. The length of this comment is rather long. This is a comment. The length of this comment is rather long.",
           },
         ],
-      })
+  }})
     );
     dispatch(changeCategory(""));
     dispatch(changeTitle(""));

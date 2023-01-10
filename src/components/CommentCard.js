@@ -4,21 +4,22 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Tab,
   Typography,
 } from "@mui/material";
+import { red } from "@mui/material/colors";
 
 function CommentCard({ comment }) {
-  const { author_id, date_created, text } = comment;
-  const initial = author_id; // TO BE reconfigured
+  const { author_username, date_created, comment_text } = comment;
+  console.log(comment);
+  const initial = author_username.slice(0, 1); // TO BE reconfigured
   return (
     <>
       <ListItem alignItems="flex-start" sx={{ bgcolor: "background.paper" }}>
         <ListItemAvatar>
-          <Avatar alt={author_id}>{initial}</Avatar>
+          <Avatar sx={{ bgcolor: red[500]}} alt={author_username}>{initial}</Avatar>
         </ListItemAvatar>
         <ListItemText
-          primary={text}
+          primary={comment_text}
           secondary={
             <>
               <Typography
@@ -26,11 +27,11 @@ function CommentCard({ comment }) {
                 component="span"
                 variant="body2"
                 color="text.primary"
+                marginRight={"10px"}
               >
-                {author_id}
+                {author_username}
               </Typography>
-              <Tab />
-              {date_created}
+              &#8212; {date_created}
             </>
           }
         />

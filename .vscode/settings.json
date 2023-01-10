@@ -1,0 +1,43 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "forum",
+      "database": "forum",
+      "username": "root",
+      "password": "gya1ydxf"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "forum",
+      "database": "forum",
+      "username": "root",
+      "password": "gya1ydxf"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "forum",
+      "database": "forum",
+      "username": "root",
+      "password": "gya1ydxf"
+    }
+  ]
+}

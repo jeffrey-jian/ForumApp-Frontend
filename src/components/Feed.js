@@ -1,12 +1,30 @@
 import { Box } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPosts } from "../store";
 import FeedCard from "./FeedCard";
 
 function Feed() {
-  const posts = useSelector((state) => {
-    return state.posts.posts;
+  const dispatch = useDispatch();
+
+  const { isLoading, posts, error } = useSelector((state) => {
+    return state.posts;
   });
+
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching data...</div>;
+  }
+
+  console.log(posts);
   const feedList =
     posts.length > 0 ? (
       posts.map((item) => <FeedCard key={item.id} item={item} />)
