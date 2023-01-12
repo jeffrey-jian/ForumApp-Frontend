@@ -1,34 +1,29 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import SubmitIcon from "@mui/icons-material/SendRounded";
-import { changeCommentText, addComment } from "../store";
+import { useAddCommentMutation } from "../store";
+import { useState } from "react";
 
 function NewCommentCard({ post_id }) {
-  const dispatch = useDispatch();
-  const { author_id, comment } = useSelector((state) => {
+
+  const [comment, setComment] = useState("");
+
+  const [addComment, results] = useAddCommentMutation();
+
+  const { author_id } = useSelector((state) => {
     return {
       author_id: state.currentUser.id,
-      comment: state.newComment.text,
     };
   });
 
   const commentChangeHandler = (event) => {
-    dispatch(changeCommentText(event.target.value));
+    setComment(event.target.value);
   };
   const commentSubmitHandler = (event) => {
     event.preventDefault();
-    dispatch(
-      addComment({
-        data: {
-          post_id,
-          author_id,
-          date_created: "32 February 2023",
-          text: comment,
-        },
-      })
-    );
-    dispatch(changeCommentText(""));
+    addComment({author_id: author_id, post_id: post_id, comment_text: comment})
+    setComment("");
   };
   return (
     <Box sx={{ bgcolor: "white" }}>

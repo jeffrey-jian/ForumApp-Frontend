@@ -19,11 +19,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { grey, purple, red } from "@mui/material/colors";
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
-import CommentCard from "./CommentCard";
 import NewCommentCard from "./NewCommentCard";
 
-
-import { useFetchCommentsQuery } from "../store";
+import CommentsList from "./CommentsList";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -37,9 +35,6 @@ const ExpandMore = styled((props) => {
 }));
 
 function FeedCard({ item }) {
-  const { data, error, isLoading } = useFetchCommentsQuery(item);
-
-  console.log(data ,error, isLoading);
 
   const [expanded, setExpanded] = useState(false);
 
@@ -52,16 +47,6 @@ function FeedCard({ item }) {
   const text = item.post_text;
   const category = item.category;
 
-  var commentsList;
-  if (isLoading) {
-    commentsList = <div>Loading comments...</div>
-  } else if (error) {
-    commentsList = <div>Error loading comments.</div>
-  } else {
-    commentsList = data.payload.data.map((comment) => (
-      <CommentCard key={comment.id} comment={comment} />
-    ));
-  }
 
   return (
     <Card sx={{ margin: 5 }}>
@@ -94,8 +79,8 @@ function FeedCard({ item }) {
         unmountOnExit
         sx={{ bgcolor: grey[100] }}
       >
-        <List sx={{ margin: "10px" }}>
-          {commentsList}
+        <List sx={{ margin: "0 5px" }}>
+          <CommentsList  post_id={id} />
           <NewCommentCard post_id={id}/>
         </List>
       </Collapse>

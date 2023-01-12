@@ -5,7 +5,6 @@ import {
   logOut,
   changeUser,
 } from "./slices/currentUserSlice";
-import { newCommentReducer, changeCommentText } from "./slices/newCommentSlice";
 import {
   newPostReducer,
   changeCategory,
@@ -24,7 +23,6 @@ const store = configureStore({
     newPost: newPostReducer,
     posts: postsReducer,
     comments: commentsReducer,
-    newComment: newCommentReducer,
     [commentsApi.reducerPath]: commentsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
@@ -44,8 +42,7 @@ export {
   changeText,
   addPost,
   addComment,
-  changeCommentText,
 };
 
 export * from "./thunks/fetchPosts";
-export { useFetchCommentsQuery } from './apis/commentsApi';
+export { useFetchCommentsQuery, useAddCommentMutation } from './apis/commentsApi';

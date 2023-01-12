@@ -24,7 +24,6 @@ function Feed() {
     return <div>Error fetching data...</div>;
   }
 
-  console.log(posts);
   const feedList =
     posts.length > 0 ? (
       posts.map((item) => <FeedCard key={item.id} item={item} />)

@@ -10,7 +10,6 @@ import { red } from "@mui/material/colors";
 
 function CommentCard({ comment }) {
   const { author_username, date_created, comment_text } = comment;
-  console.log(comment);
   const initial = author_username.slice(0, 1); // TO BE reconfigured
   return (
     <>
