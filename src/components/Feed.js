@@ -5,7 +5,12 @@ import FeedCard from "./FeedCard";
 
 function Feed({ user }) {
 
-  const {data, error, isLoading } = useFetchPostsQuery("all");
+  const fetchArg = {
+    user: user,
+    type: "all"
+  };
+
+  const {data, error, isLoading } = useFetchPostsQuery(fetchArg);
 
 
   if (isLoading) {

@@ -32,6 +32,9 @@ const store = configureStore({
 
 setupListeners(store.dispatch);
 
+console.log("postsApi", postsApi);
+console.log("commentsApi", commentsApi);
+
 export {
   store,
   logIn,
@@ -48,4 +51,4 @@ export {
   useEditCommentMutation,
   useRemoveCommentMutation,
 } from "./apis/commentsApi";
-export { useFetchPostsQuery } from "./apis/postsApi";
+export { useFetchPostsQuery, useAddPostMutation } from "./apis/postsApi";

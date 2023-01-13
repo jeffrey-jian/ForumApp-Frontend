@@ -1,6 +1,6 @@
 import {
   Box,
-  Button,
+  // Button,
   FormControl,
   InputLabel,
   ListItemButton,
@@ -16,7 +16,13 @@ import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCategory, changeTitle, changeText } from "../store";
+import {
+  changeCategory,
+  changeTitle,
+  changeText,
+  useAddPostMutation,
+} from "../store";
+import { LoadingButton } from "@mui/lab";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -26,7 +32,6 @@ const StyledModal = styled(Modal)({
 
 function NewPost() {
   const dispatch = useDispatch();
-
   const { author_id, category, title, text } = useSelector((state) => {
     return {
       author_id: state.currentUser.id,
@@ -35,6 +40,9 @@ function NewPost() {
       text: state.newPost.text,
     };
   });
+
+  const [addPost, addPostResults] = useAddPostMutation();
+
   const categoryChangeHandler = (event) => {
     dispatch(changeCategory(event.target.value));
   };
@@ -55,7 +63,13 @@ function NewPost() {
   };
 
   const formSubmitHandler = (event) => {
-    event.preventDefault();;
+    event.preventDefault();
+    addPost({
+      author_id: author_id,
+      category: category,
+      title: title,
+      post_text: text,
+    });
     dispatch(changeCategory(""));
     dispatch(changeTitle(""));
     dispatch(changeText(""));
@@ -84,7 +98,7 @@ function NewPost() {
           <Typography variant="h6" color="gray" textAlign="center">
             Create a Post
           </Typography>
-          <form>
+          <form onSubmit={formSubmitHandler}>
             <FormControl sx={{ minWidth: 120 }} size="small" margin="dense">
               <InputLabel id="category">Category</InputLabel>
               <Select
@@ -118,7 +132,7 @@ function NewPost() {
               value={text}
               onChange={textChangeHandler}
             />
-            <Button
+            {/* <Button
               onClick={formSubmitHandler}
               disabled={!isValid}
               fullWidth
@@ -126,7 +140,17 @@ function NewPost() {
               sx={{ margin: "10px 0" }}
             >
               Post
-            </Button>
+            </Button> */}
+            <LoadingButton
+              onClick={formSubmitHandler}
+              disabled={!isValid}
+              loading={addPostResults.isLoading}
+              fullWidth
+              variant="contained"
+              sx={{ margin: "10px 0" }}
+            >
+              <span>Post</span>
+            </LoadingButton>
           </form>
         </Box>
       </StyledModal>

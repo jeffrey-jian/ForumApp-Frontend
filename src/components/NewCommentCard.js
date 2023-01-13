@@ -8,7 +8,7 @@ import { LoadingButton } from "@mui/lab";
 function NewCommentCard({ post_id, user }) {
   const [comment, setComment] = useState("");
 
-  const [addComment, AddCommentResults] = useAddCommentMutation();
+  const [addComment, addCommentResults] = useAddCommentMutation();
 
   const { author_id } = useSelector((state) => {
     return {
@@ -49,7 +49,7 @@ function NewCommentCard({ post_id, user }) {
               <InputAdornment position="end">
                 <LoadingButton
                   onClick={commentSubmitHandler}
-                  loading={AddCommentResults.isLoading}
+                  loading={addCommentResults.isLoading}
                   disabled={comment === ""}
                   sx={{ display: isGuestUser ? "none" : "block" }}
                 >
