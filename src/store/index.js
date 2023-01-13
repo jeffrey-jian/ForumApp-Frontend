@@ -12,21 +12,23 @@ import {
   changeText,
 } from "./slices/newPostSlice";
 import { postsReducer, addPost } from "./slices/postsSlice";
-import { addComment, commentsReducer } from "./slices/commentsSlice";
 
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import { commentsApi } from "./apis/commentsApi";
+import { postsApi } from "./apis/postsApi";
 
 const store = configureStore({
   reducer: {
     currentUser: currentUserReducer,
     newPost: newPostReducer,
     posts: postsReducer,
-    comments: commentsReducer,
     [commentsApi.reducerPath]: commentsApi.reducer,
+    // [postsApi.reducerPath]: postsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(commentsApi.middleware);
+    return getDefaultMiddleware()
+      .concat(commentsApi.middleware)
+      .concat(postsApi.middleware);
   },
 });
 
@@ -41,7 +43,6 @@ export {
   changeTitle,
   changeText,
   addPost,
-  addComment,
 };
 
 export * from "./thunks/fetchPosts";

@@ -3,18 +3,19 @@ import { grey } from "@mui/material/colors";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../store";
+import { useFetchPostsQuery } from "../store/apis/postsApi";
 import FeedCard from "./FeedCard";
 
 function Feed({ user }) {
+  
   const dispatch = useDispatch();
-
   const { isLoading, posts, error } = useSelector((state) => {
     return state.posts;
   });
-
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
+
 
   if (isLoading) {
     return <div><CircularProgress /></div>;
