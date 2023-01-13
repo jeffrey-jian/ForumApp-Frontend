@@ -13,13 +13,17 @@ import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
 import PlayIcon from "@mui/icons-material/SportsEsports";
 
-function Sidebar() {
+function Sidebar({ user }) {
+
+  const { isLoggedIn } = user;
+
+
   return (
     <Box flex={1} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
       <Box position="fixed">
         <List>
           <ListItem>
-            <NewPost />
+            {isLoggedIn ? <NewPost /> : null}
           </ListItem>
           <Divider />
           <ListItem>

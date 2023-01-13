@@ -13,13 +13,13 @@ const postsSlice = createSlice({
     // changed to action.payload.DATA.{...}
     addPost(state, action) {
       state.posts.push({
-        id: nanoid(),
-        author_id: action.payload.data.author_id,
-        date_created: action.payload.data.date_created,
-        category: action.payload.data.category,
-        title: action.payload.data.title,
-        text: action.payload.data.text,
-        comments: action.payload.data.comments,
+        // id: nanoid(),
+        // author_id: action.payload.data.author_id,
+        // date_created: action.payload.data.date_created,
+        // category: action.payload.data.category,
+        // title: action.payload.data.title,
+        // text: action.payload.data.text,
+        // comments: action.payload.data.comments,
       });
     },
 

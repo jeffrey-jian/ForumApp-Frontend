@@ -4,7 +4,6 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  // CardMedia,
   Checkbox,
   Collapse,
   FormLabel,
@@ -15,7 +14,6 @@ import {
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import CommentIcon from '@mui/icons-material/CommentOutlined';
 import { grey, purple, red } from "@mui/material/colors";
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
@@ -34,7 +32,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-function FeedCard({ item }) {
+function FeedCard({ item, user }) {
 
   const [expanded, setExpanded] = useState(false);
 
@@ -42,20 +40,26 @@ function FeedCard({ item }) {
     setExpanded(!expanded);
   };
   const id = item.id;
-  // const initial = item.author_id; // to be reconfigured
+  const author_username = item.author_username;
+  const initial = author_username.slice(0, 1);
+  const date_created = item.date_created;
   const title = item.title;
   const text = item.post_text;
   const category = item.category;
 
 
+
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
-        avatar={<Avatar sx={{ bgcolor: purple[500] }}>M</Avatar>}
-        title={title}
-        subheader={category}
+        avatar={<Avatar sx={{ bgcolor: purple[500] }}>{initial}</Avatar>}
+        title={author_username}
+        subheader={category + "\t" + date_created}
       />
       <CardContent>
+        <Typography variant="h6" color="text.primary">
+          {title}
+        </Typography>
         <Typography variant="body1" color="text.secondary">
           {text}
         </Typography>
@@ -80,8 +84,8 @@ function FeedCard({ item }) {
         sx={{ bgcolor: grey[100] }}
       >
         <List sx={{ margin: "0 5px" }}>
-          <CommentsList  post_id={id} />
-          <NewCommentCard post_id={id}/>
+          <CommentsList  post_id={id} user={user} />
+          <NewCommentCard post_id={id} user={user}/>
         </List>
       </Collapse>
     </Card>

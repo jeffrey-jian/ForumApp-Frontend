@@ -1,11 +1,11 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../store";
 import FeedCard from "./FeedCard";
 
-function Feed() {
+function Feed({ user }) {
   const dispatch = useDispatch();
 
   const { isLoading, posts, error } = useSelector((state) => {
@@ -14,10 +14,10 @@ function Feed() {
 
   useEffect(() => {
     dispatch(fetchPosts());
-  }, []);
+  }, [dispatch]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div><CircularProgress /></div>;
   }
 
   if (error) {
@@ -26,7 +26,7 @@ function Feed() {
 
   const feedList =
     posts.length > 0 ? (
-      posts.map((item) => <FeedCard key={item.id} item={item} />)
+      posts.map((item) => <FeedCard key={item.id} item={item} user={user}/>)
     ) : (
       <p>No posts found!</p>
     );

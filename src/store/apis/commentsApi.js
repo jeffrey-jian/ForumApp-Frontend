@@ -7,27 +7,13 @@ const commentsApi = createApi({
   }),
   endpoints(builder) {
     return {
-      addComment: builder.mutation({
-        invalidatesTags: (result, error, arg) => {
-          console.log("addComment tag:", { type: "Comment", post_id: arg.post_id });
-          return [{ type: "Comment", id: arg.post_id }];
-        },
-        query: ({ author_id, post_id, comment_text }) => {
-          return {
-            url: "/comments",
-            method: "POST",
-            body: {
-              author_id: author_id,
-              comment_text: comment_text,
-              post_id: post_id,
-            },
-          };
-        },
-      }),
       fetchComments: builder.query({
         providesTags: (result, error, post_id) => {
-          console.log("fetchComments tag:", { type: "Comment", post_id: post_id });
-          return [{ type: "Comment", id: post_id }];
+          const tags = result.payload.data.map((comment) => {
+            return { type: "Comment", id: comment.id };
+          });
+          tags.push({ type: "PostsComments", id: post_id });
+          return tags;
         },
         query: (post_id) => {
           return {
@@ -39,9 +25,56 @@ const commentsApi = createApi({
           };
         },
       }),
+      addComment: builder.mutation({
+        invalidatesTags: (result, error, arg) => {
+          return [{ type: "PostsComments", id: arg.post_id }];
+        },
+        query: ({ author_id, post_id, comment_text }) => {
+          return {
+            method: "POST",
+            url: "/comments",
+            body: {
+              author_id: author_id,
+              comment_text: comment_text,
+              post_id: post_id,
+            },
+          };
+        },
+      }),
+      editComment: builder.mutation({
+        invalidatesTags: (result, error, arg) => {
+          return [{ type: "Comment", id: arg.comment_id }];
+        },
+        query: ({comment_id, comment_text}) => {
+          return {
+            method: "PUT",
+            url: `/comments/${comment_id}`,
+            body: {
+              comment_id: comment_id,
+              comment_text: comment_text,
+            }
+          };
+        },
+      }),
+      removeComment: builder.mutation({
+        invalidatesTags: (result, error, comment_id) => {
+          return [{ type: "Comment", id: comment_id }];
+        },
+        query: (comment_id) => {
+          return {
+            method: "DELETE",
+            url: `/comments/${comment_id}`,
+          };
+        },
+      }),
     };
   },
 });
 
-export const { useFetchCommentsQuery, useAddCommentMutation } = commentsApi;
+export const {
+  useFetchCommentsQuery,
+  useAddCommentMutation,
+  useEditCommentMutation,
+  useRemoveCommentMutation,
+} = commentsApi;
 export { commentsApi };

@@ -1,27 +1,27 @@
-import { List } from "@mui/material";
+import { List, Typography } from "@mui/material";
 import { useFetchCommentsQuery } from "../store";
 import CommentCard from "./CommentCard";
 
-function CommentsList({ post_id }) {
-
-  const { data, error, isLoading } = useFetchCommentsQuery(post_id);
+function CommentsList({ post_id, user }) {
+  const { data, error, isFetching } = useFetchCommentsQuery(post_id);
 
   var commentsList;
-  if (isLoading) {
-    commentsList = <div>Loading comments...</div>
+  if (isFetching) {
+    // do nothing
   } else if (error) {
-    commentsList = <div>Error loading comments.</div>
+    commentsList = <div>Error loading comments.</div>;
   } else {
-    commentsList = data.payload.data.map((comment) => (
-      <CommentCard key={comment.id} comment={comment} />
-    ));
+
+    if (data.payload.data.length === 0) {
+      commentsList = <Typography>No comments yet!</Typography>;
+    } else {
+      commentsList = data.payload.data.map((comment) => (
+        <CommentCard key={comment.id} comment={comment} user={user} />
+      ));
+    }
   }
 
-  return (
-    <List>
-      {commentsList}
-    </List>
-  )
+  return <>{commentsList}</>;
 }
 
 export default CommentsList;

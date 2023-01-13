@@ -1,10 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 import {
   AppBar,
   Avatar,
   Button,
-  IconButton,
   InputBase,
   Menu,
   MenuItem,
@@ -30,21 +29,18 @@ const Search = styled("div")(({ theme }) => ({
   width: "40%",
 }));
 
-const Icons = styled(Box)(({ theme }) => ({
-  display: "flex",
-  gap: "20px",
-  alignItems: "center",
-}));
+// const Icons = styled(Box)(({ theme }) => ({
+//   display: "flex",
+//   gap: "20px",
+//   alignItems: "center",
+// }));
 
-function Navbar() {
+function Navbar({ user }) {
   const dispatch = useDispatch();
-  const { isLoggedIn, username } = useSelector((state) => {
-    return {
-      isLoggedIn: state.currentUser.isLoggedIn,
-      username: state.currentUser.name,
-    };
-  });
-  const initial = isLoggedIn ? username.slice(0, 1) : "";
+
+  const { isLoggedIn, name: username } = user;
+
+  const initial = isLoggedIn ? username.slice(0, 1) : null;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

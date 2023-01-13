@@ -45,4 +45,9 @@ export {
 };
 
 export * from "./thunks/fetchPosts";
-export { useFetchCommentsQuery, useAddCommentMutation } from './apis/commentsApi';
+export {
+  useFetchCommentsQuery,
+  useAddCommentMutation,
+  useEditCommentMutation,
+  useRemoveCommentMutation,
+} from "./apis/commentsApi";
