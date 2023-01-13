@@ -1,20 +1,11 @@
 import { Box, CircularProgress } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchPosts } from "../store";
-import { useFetchPostsQuery } from "../store/apis/postsApi";
+import { useFetchPostsQuery } from "../store";
 import FeedCard from "./FeedCard";
 
 function Feed({ user }) {
-  
-  const dispatch = useDispatch();
-  const { isLoading, posts, error } = useSelector((state) => {
-    return state.posts;
-  });
-  useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
+
+  const {data, error, isLoading } = useFetchPostsQuery("all");
 
 
   if (isLoading) {
@@ -25,6 +16,7 @@ function Feed({ user }) {
     return <div>Error fetching data...</div>;
   }
 
+  const posts = data.payload.data;
   const feedList =
     posts.length > 0 ? (
       posts.map((item) => <FeedCard key={item.id} item={item} user={user}/>)

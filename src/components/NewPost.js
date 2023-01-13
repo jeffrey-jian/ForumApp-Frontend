@@ -16,7 +16,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCategory, changeTitle, changeText, addPost } from "../store";
+import { changeCategory, changeTitle, changeText } from "../store";
 
 const StyledModal = styled(Modal)({
   display: "flex",
@@ -55,30 +55,7 @@ function NewPost() {
   };
 
   const formSubmitHandler = (event) => {
-    event.preventDefault();
-    dispatch(
-      addPost({data:{
-        author_id,
-        date_created: "30 February 2023",
-        category,
-        title,
-        text,
-        comments: [
-          {
-            id: "1",
-            author_id: "Test Author 2",
-            date_created: "31 February 2023",
-            text: "This is a comment. The length of this comment is rather short.",
-          },
-          {
-            id: "2",
-            author_id: "Test Author 2",
-            date_created: "31 February 2023",
-            text: "This is a comment. The length of this comment is rather long. This is a comment. The length of this comment is rather long.",
-          },
-        ],
-  }})
-    );
+    event.preventDefault();;
     dispatch(changeCategory(""));
     dispatch(changeTitle(""));
     dispatch(changeText(""));

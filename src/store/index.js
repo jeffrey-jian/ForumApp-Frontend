@@ -11,7 +11,6 @@ import {
   changeTitle,
   changeText,
 } from "./slices/newPostSlice";
-import { postsReducer, addPost } from "./slices/postsSlice";
 
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import { commentsApi } from "./apis/commentsApi";
@@ -21,9 +20,8 @@ const store = configureStore({
   reducer: {
     currentUser: currentUserReducer,
     newPost: newPostReducer,
-    posts: postsReducer,
     [commentsApi.reducerPath]: commentsApi.reducer,
-    // [postsApi.reducerPath]: postsApi.reducer,
+    [postsApi.reducerPath]: postsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
@@ -42,13 +40,12 @@ export {
   changeCategory,
   changeTitle,
   changeText,
-  addPost,
 };
 
-export * from "./thunks/fetchPosts";
 export {
   useFetchCommentsQuery,
   useAddCommentMutation,
   useEditCommentMutation,
   useRemoveCommentMutation,
 } from "./apis/commentsApi";
+export { useFetchPostsQuery } from "./apis/postsApi";
