@@ -19,15 +19,15 @@ function Sidebar({ user }) {
 
 
   return (
-    <Box flex={1} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
+    <Box flex={1} p={0} sx={{ display: { xs: "none", sm: "block" } }}>
       <Box position="fixed">
         <List>
           <ListItem>
             {isLoggedIn ? <NewPost /> : null}
           </ListItem>
-          <Divider />
+          <Divider variant="middle"/>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton >
               <ListItemIcon>
                 <AllIcon fontSize="large" />
               </ListItemIcon>

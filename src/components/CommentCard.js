@@ -30,6 +30,7 @@ function CommentCard({ comment, user }) {
 
   const [editMode, setEditMode] = useState(false);
   const [editedComment, setEditedComment] = useState(comment_text);
+  const [isSecondaryShown, setIsSecondaryShown] = useState(false);
 
   const removeCommentHandler = () => {
     removeComment(id);
@@ -56,6 +57,8 @@ function CommentCard({ comment, user }) {
       <ListItem
         alignItems="flex-start"
         sx={{ bgcolor: editMode ? red[50] : "background.paper" }}
+        onMouseEnter = {() =>  setIsSecondaryShown(true)}
+        onMouseLeave = {() => setIsSecondaryShown(false)}
       >
         <ListItemAvatar>
           <Avatar sx={{ bgcolor: red[500] }} alt={author_username}>
@@ -79,8 +82,10 @@ function CommentCard({ comment, user }) {
           }
         />
         <ListItemSecondaryAction
+          onMouseEnter = {() => setIsSecondaryShown(true)}
+          onMouseLeave = {() => setIsSecondaryShown(false)}
           sx={{
-            display: user_id === author_id ? "block" : "none",
+            display: ((isSecondaryShown && user_id === author_id ? "block" : "none")),
             margin: "0px",
           }}
         >

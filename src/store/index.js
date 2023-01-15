@@ -7,6 +7,7 @@ import {
 } from "./slices/currentUserSlice";
 import {
   newPostReducer,
+  changeHeading,
   changeCategory,
   changeTitle,
   changeText,
@@ -40,6 +41,7 @@ export {
   logIn,
   logOut,
   changeUser,
+  changeHeading,
   changeCategory,
   changeTitle,
   changeText,
@@ -51,4 +53,9 @@ export {
   useEditCommentMutation,
   useRemoveCommentMutation,
 } from "./apis/commentsApi";
-export { useFetchPostsQuery, useAddPostMutation } from "./apis/postsApi";
+export {
+  useFetchPostsQuery,
+  useAddPostMutation,
+  useEditPostMutation,
+  useRemovePostMutation,
+} from "./apis/postsApi";

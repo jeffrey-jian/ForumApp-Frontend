@@ -7,11 +7,11 @@ const postsApi = createApi({
   endpoints(builder) {
     return {
       fetchPosts: builder.query({
-        providesTags: (result, error, arg) => {
+        providesTags: (result, error, post) => {
           const tags = result.payload.data.map((post) => {
             return { type: "Post", id: post.id };
           });
-          tags.push("Feed")
+          tags.push("Feed");
           return tags;
         },
         query: (arg) => {
@@ -27,7 +27,6 @@ const postsApi = createApi({
       addPost: builder.mutation({
         invalidatesTags: ["Feed"],
         query: ({ author_id, category, title, post_text }) => {
-          console.log("Query received.");
           return {
             method: "POST",
             url: "/posts",
@@ -41,10 +40,25 @@ const postsApi = createApi({
         },
       }),
       editPost: builder.mutation({}),
-      removePost: builder.mutation({}),
+      removePost: builder.mutation({
+        invalidatesTags: (result, error, post) => {
+          return [{ type: "Post", id: post.id }];
+        },
+        query: (post) => {
+          return {
+            method: "DELETE",
+            url: `/posts/${post.id}`,
+          };
+        },
+      }),
     };
   },
 });
 
-export const { useFetchPostsQuery, useAddPostMutation } = postsApi;
+export const {
+  useFetchPostsQuery,
+  useAddPostMutation,
+  useRemovePostMutation,
+  useEditPostMutation,
+} = postsApi;
 export { postsApi };

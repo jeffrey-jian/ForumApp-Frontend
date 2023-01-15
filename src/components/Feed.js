@@ -30,7 +30,7 @@ function Feed({ user }) {
     );
 
   return (
-    <Box bgcolor={grey[100]} flex={4} p={2}>
+    <Box bgcolor={grey[100]} flex={4} p={2} >
       {feedList}
     </Box>
   );

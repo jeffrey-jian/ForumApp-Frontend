@@ -3,11 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 const newPostSlice = createSlice({
   name: "createPost",
   initialState: {
+    heading: "",
     category: "",
     title: "",
     text: "",
   },
   reducers: {
+    changeHeading(state, action) {
+      state.heading = action.payload;
+    },
     changeCategory(state, action) {
       state.category = action.payload;
     },
@@ -20,5 +24,5 @@ const newPostSlice = createSlice({
   },
 });
 
-export const { changeCategory, changeTitle, changeText } = newPostSlice.actions;
+export const { changeHeading, changeCategory, changeTitle, changeText } = newPostSlice.actions;
 export const newPostReducer = newPostSlice.reducer;

@@ -27,7 +27,6 @@ const commentsApi = createApi({
       }),
       addComment: builder.mutation({
         invalidatesTags: (result, error, arg) => {
-          console.log("invalidateTags from addComment...");
           return [{ type: "PostsComments", id: arg.post_id }];
         },
         query: ({ author_id, post_id, comment_text }) => {
