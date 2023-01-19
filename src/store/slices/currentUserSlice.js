@@ -5,7 +5,7 @@ const currentUserSlice = createSlice({
   initialState: {
     isLoggedIn: true,
     id: 1,
-    name: "Max",
+    name: "Admin",
   },
   reducers: {
     logOut(state, action) {
@@ -15,7 +15,8 @@ const currentUserSlice = createSlice({
     },
     logIn(state, action) {
       state.isLoggedIn = true;
-      state.id = 1;
+      state.id = action.payload.id;
+      state.name = action.payload.username;
     },
     changeUser(state, action) {
       state.name = action.payload;

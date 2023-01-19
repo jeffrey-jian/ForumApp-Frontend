@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
+
 const postsApi = createApi({
   reducerPath: "posts",
   baseQuery: fetchBaseQuery({
@@ -14,11 +15,11 @@ const postsApi = createApi({
           tags.push("Feed");
           return tags;
         },
-        query: (arg) => {
+        query: (filter) => {
           return {
             url: "/posts",
             params: {
-              type: arg.type,
+              filter: filter,
             },
             method: "GET",
           };

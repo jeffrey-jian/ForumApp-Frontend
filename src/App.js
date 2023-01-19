@@ -10,6 +10,7 @@ function App() {
     return {
       user: state.currentUser,
     };
+    
   });
 
   return (

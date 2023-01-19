@@ -12,11 +12,17 @@ import AllIcon from "@mui/icons-material/Public";
 import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
 import PlayIcon from "@mui/icons-material/SportsEsports";
+import { useDispatch } from "react-redux";
+import { filterBy } from "../store";
 
 function Sidebar({ user }) {
-
+  const dispatch = useDispatch();
   const { isLoggedIn } = user;
 
+  const buttonClickHandler = (event) => {
+    console.log(event.currentTarget.id);
+    dispatch(filterBy(event.currentTarget.id));
+  };
 
   return (
     <Box flex={1} p={0} sx={{ display: { xs: "none", sm: "block" } }}>
@@ -27,7 +33,7 @@ function Sidebar({ user }) {
           </ListItem>
           <Divider variant="middle"/>
           <ListItem>
-            <ListItemButton >
+            <ListItemButton id="all" onClick={buttonClickHandler}>
               <ListItemIcon>
                 <AllIcon fontSize="large" />
               </ListItemIcon>
@@ -38,7 +44,7 @@ function Sidebar({ user }) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton id="school" onClick={buttonClickHandler}>
               <ListItemIcon>
                 <SchoolIcon fontSize="large" />
               </ListItemIcon>
@@ -49,7 +55,7 @@ function Sidebar({ user }) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton id="work" onClick={buttonClickHandler}>
               <ListItemIcon>
                 <WorkIcon fontSize="large" />
               </ListItemIcon>
@@ -60,7 +66,7 @@ function Sidebar({ user }) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton id="play" onClick={buttonClickHandler}>
               <ListItemIcon>
                 <PlayIcon fontSize="large" />
               </ListItemIcon>

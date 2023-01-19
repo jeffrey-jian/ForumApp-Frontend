@@ -44,13 +44,33 @@ function FeedCard({ item, user }) {
 
   const [removePost, removePostResults] = useRemovePostMutation();
 
+  const id = item.id;
+  const author_id = item.author_id;
+  const author_username = item.author_username;
+  const initial = author_username.slice(0, 1);
+  const date_created = item.date_created;
+  const title = item.title;
+  const text = item.post_text;
+  const category = item.category;
+
+
+//   <Stack sx={{ visibility: isActionShown ? "visible" : "hidden" }}>
+//   <IconButton onClick={onEditHandler}>
+//     <EditIcon />
+//   </IconButton>
+//   <IconButton onClick={onDeleteHandler}>
+//     <DeleteIcon />
+//   </IconButton>
+// </Stack>
+
+
   const expandClickHandler = () => {
     setExpanded(!expanded);
   };
   const mouseEnterHandler = () => {
-    if (user.isLoggedIn) {
+    // if (user.id === author_id) {
       setIsActionShown(true);
-    }
+    // }
   };
   const mouseLeaveHandler = () => {
     setIsActionShown(false);
@@ -62,13 +82,14 @@ function FeedCard({ item, user }) {
     removePost(item);
   };
 
-  const id = item.id;
-  const author_username = item.author_username;
-  const initial = author_username.slice(0, 1);
-  const date_created = item.date_created;
-  const title = item.title;
-  const text = item.post_text;
-  const category = item.category;
+  const sideActions = user.id === author_id ? (  <Stack sx={{ visibility: isActionShown ? "visible" : "hidden" }}>
+  <IconButton onClick={onEditHandler}>
+    <EditIcon />
+  </IconButton>
+  <IconButton onClick={onDeleteHandler}>
+    <DeleteIcon />
+  </IconButton>
+</Stack>) : null;
 
   return (
     <>
@@ -87,16 +108,7 @@ function FeedCard({ item, user }) {
           avatar={<Avatar sx={{ bgcolor: purple[500] }}>{initial}</Avatar>}
           title={author_username}
           subheader={category + "\t" + date_created}
-          action={
-            <Stack sx={{ visibility: isActionShown ? "visible" : "hidden" }}>
-              <IconButton onClick={onEditHandler}>
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={onDeleteHandler}>
-                <DeleteIcon />
-              </IconButton>
-            </Stack>
-          }
+          action={sideActions}
         />
         <CardContent>
           <Typography variant="h6" color="text.primary">

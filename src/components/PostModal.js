@@ -21,7 +21,7 @@ import {
 
 function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
   const dispatch = useDispatch();
-  const { author_id, category, title, text } = useSelector((state) => {
+  const { author_id, heading, category, title, text } = useSelector((state) => {
     return {
       author_id: state.currentUser.id,
       heading: state.newPost.heading,
@@ -58,7 +58,6 @@ function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
   }
   const isValid = category !== "" && title !== "";
   
-  var heading;
   useEffect(() => {
     console.log("Running useEffect");
     switch (type) {
@@ -109,7 +108,7 @@ function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
         padding={3}
         borderRadius={5}
       >
-        <Typography variant="h6" color="gray" textAlign="center">
+        <Typography variant="h6" color="gray" textAlign="center" value>
           {heading}
         </Typography>
         <form onSubmit={formSubmitHandler}>
