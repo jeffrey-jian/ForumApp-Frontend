@@ -5,7 +5,7 @@ import { useAddCommentMutation } from "../store";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 
-function NewCommentCard({ post_id, user }) {
+function CommentNew({ post_id, user }) {
   const [comment, setComment] = useState("");
 
   const [addComment, addCommentResults] = useAddCommentMutation();
@@ -64,4 +64,4 @@ function NewCommentCard({ post_id, user }) {
   );
 }
 
-export default NewCommentCard;
+export default CommentNew;

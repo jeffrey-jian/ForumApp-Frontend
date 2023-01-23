@@ -3,7 +3,7 @@ import { Button, Modal, Stack, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { logIn } from "../store";
+import { filterBy, logIn } from "../store";
 import { useLazyFetchUserQuery } from "../store/apis/usersApi";
 
 const StyledModal = styled(Modal)({
@@ -33,6 +33,7 @@ function LoginModal({ openModal, closeModalHandler }) {
           })
         );
         closeModalHandler();
+        dispatch(filterBy("All"));
       } else {
         alert(`User ${usernameInput} was not registered successfully. Please try again.`);
       }

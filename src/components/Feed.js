@@ -5,14 +5,23 @@ import { useFetchPostsQuery } from "../store";
 import FeedCard from "./FeedCard";
 
 function Feed({ user }) {
-  const { filter, searchTerm } = useSelector((state) => {
+  const { filter, searchTerm, author, likedBy } = useSelector((state) => {
     return {
       filter: state.feedPosts.filter,
       searchTerm: state.feedPosts.searchTerm,
+      author: state.feedPosts.author,
+      likedBy: state.feedPosts.likedBy,
     };
   });
 
-  const { data, error, isLoading } = useFetchPostsQuery({filter: filter, searchTerm: searchTerm});
+
+
+  const { data, error, isLoading } = useFetchPostsQuery({
+    filter: filter,
+    searchTerm: searchTerm,
+    author: author,
+    likedBy: likedBy,
+  });
 
   if (isLoading) {
     return (

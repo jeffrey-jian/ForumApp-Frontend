@@ -11,7 +11,6 @@ function CommentsList({ post_id, user }) {
   } else if (error) {
     commentsList = <div>Error loading comments.</div>;
   } else {
-    console.log(data.payload.data);
     if (data.payload.data.length === 0) {
       commentsList = <Typography>No comments yet!</Typography>;
     } else {

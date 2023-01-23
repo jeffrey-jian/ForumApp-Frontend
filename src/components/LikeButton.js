@@ -2,7 +2,7 @@ import CheckBox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import { red } from "@mui/material/colors";
-import { FormControlLabel } from "@mui/material";
+import { FormControlLabel, Tooltip } from "@mui/material";
 import {
   useAddLikeMutation,
   useFetchLikesByPostQuery,
@@ -39,12 +39,17 @@ function LikeButton({ post, user }) {
   };
 
   const heartCheckBox = (
-    <CheckBox
-      checked={likedByUserBool}
-      onChange={changeHandler}
-      icon={<FavoriteBorder />}
-      checkedIcon={<Favorite sx={{ color: red[500] }} />}
-    />
+    <Tooltip title={user.isLoggedIn ? "Like Post" : "Login to Like Post"}>
+      <span>
+      <CheckBox
+        disabled={!user.isLoggedIn}
+        checked={likedByUserBool}
+        onChange={changeHandler}
+        icon={<FavoriteBorder />}
+        checkedIcon={<Favorite sx={{ color: red[500] }} />}
+      />
+      </span>
+    </Tooltip>
   );
 
   return (

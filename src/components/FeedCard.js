@@ -8,6 +8,7 @@ import {
   Collapse,
   IconButton,
   List,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -15,7 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { grey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
-import NewCommentCard from "./NewCommentCard";
+import CommentNew from "./CommentNew";
 import PostModal from "./PostModal";
 
 import { useState } from "react";
@@ -57,22 +58,11 @@ function FeedCard({ item, user }) {
   const text = item.post_text;
   const category = item.category;
 
-  //   <Stack sx={{ visibility: isActionShown ? "visible" : "hidden" }}>
-  //   <IconButton onClick={onEditHandler}>
-  //     <EditIcon />
-  //   </IconButton>
-  //   <IconButton onClick={onDeleteHandler}>
-  //     <DeleteIcon />
-  //   </IconButton>
-  // </Stack>
-
   const expandClickHandler = () => {
     setExpanded(!expanded);
   };
   const mouseEnterHandler = () => {
-    // if (user.id === author_id) {
     setIsActionShown(true);
-    // }
   };
   const mouseLeaveHandler = () => {
     setIsActionShown(false);
@@ -87,12 +77,16 @@ function FeedCard({ item, user }) {
   const sideActions =
     user.id === author_id ? (
       <Stack sx={{ visibility: isActionShown ? "visible" : "hidden" }}>
-        <IconButton onClick={onEditHandler}>
-          <EditIcon />
-        </IconButton>
+        <Tooltip title="Edit Post" placement="right">
+          <IconButton onClick={onEditHandler}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete Post" placement="right">
         <IconButton onClick={onDeleteHandler}>
           {removePostResults.isLoading ? <CircularProgress /> : <DeleteIcon />}
         </IconButton>
+        </Tooltip>
       </Stack>
     ) : null;
 
@@ -140,7 +134,7 @@ function FeedCard({ item, user }) {
         >
           <List sx={{ margin: "0 5px" }}>
             <CommentsList post_id={id} user={user} />
-            <NewCommentCard post_id={id} user={user} />
+            <CommentNew post_id={id} user={user} />
           </List>
         </Collapse>
       </Card>

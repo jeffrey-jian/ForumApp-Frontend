@@ -43,7 +43,6 @@ function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
     dispatch(changeText(event.target.value));
   };
   const editFields = (originalPost) => {
-    // console.log(originalPost);
     const og_category = originalPost.category;
     const og_title = originalPost.title;
     const og_text = originalPost.post_text;
@@ -59,7 +58,6 @@ function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
   const isValid = category !== "" && title !== "";
   
   useEffect(() => {
-    console.log("Running useEffect");
     switch (type) {
       case "new":
         resetFields();

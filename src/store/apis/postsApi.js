@@ -13,6 +13,9 @@ const postsApi = createApi({
           const tags = result.payload.data.map((post) => {
             return { type: "Post", id: post.id };
           });
+          // for (var key in conditions) {
+          //   tags.push({type: key, id: conditions[key]})
+          // }
           tags.push("Feed");
           return tags;
         },
@@ -22,6 +25,8 @@ const postsApi = createApi({
             params: {
               filter: conditions.filter,
               searchTerm: conditions.searchTerm,
+              author: conditions.author,
+              likedBy: conditions.likedBy,
             },
             method: "GET",
           };

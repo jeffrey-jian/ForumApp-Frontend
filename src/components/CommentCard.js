@@ -3,30 +3,27 @@ import {
   CircularProgress,
   Divider,
   IconButton,
-  InputAdornment,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
   Stack,
-  TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { grey, red } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { useRemoveCommentMutation, useEditCommentMutation } from "../store";
-import { LoadingButton } from "@mui/lab";
-import { Box } from "@mui/system";
+import { useRemoveCommentMutation } from "../store";
 
 import { useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import CommentEdit from "./CommentEdit";
 
 function CommentCard({ comment, user }) {
   const [removeComment, removeCommentResults] = useRemoveCommentMutation();
-  const [editComment, editCommentResults] = useEditCommentMutation();
 
   dayjs.extend(relativeTime);
   const {
@@ -41,7 +38,6 @@ function CommentCard({ comment, user }) {
   const formatted_date = date_created ? dayjs(date_created).fromNow() : null;
 
   const [editMode, setEditMode] = useState(false);
-  const [editedComment, setEditedComment] = useState(comment_text);
   const [isSecondaryShown, setIsSecondaryShown] = useState(false);
 
   const removeCommentHandler = () => {
@@ -49,17 +45,6 @@ function CommentCard({ comment, user }) {
   };
   const editCommentToggleHandler = () => {
     setEditMode(!editMode);
-    setEditedComment(comment_text);
-  };
-  const editCommentChangeHandler = (event) => {
-    setEditedComment(event.target.value);
-  };
-  const submitEditCommentHandler = (event) => {
-    event.preventDefault();
-    editComment({
-      comment_id: id,
-      comment_text: editedComment,
-    });
   };
 
   const initial = author_username.slice(0, 1);
@@ -103,59 +88,53 @@ function CommentCard({ comment, user }) {
           }}
         >
           <Stack>
-            <IconButton
-              onClick={editCommentToggleHandler}
-              size="small"
-              sx={{ color: grey[500], display: editMode ? "none" : "in-line" }}
-            >
-              <EditIcon fontSize="small" />
-            </IconButton>
+            <Tooltip title="Edit Comment" placement="right">
+              <IconButton
+                onClick={editCommentToggleHandler}
+                size="small"
+                sx={{
+                  color: grey[500],
+                  display: editMode ? "none" : "in-line",
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
 
-            <IconButton
-              onClick={removeCommentHandler}
-              size="small"
-              sx={{ color: grey[500], display: editMode ? "none" : "in-line" }}
-            >
-              {removeCommentResults.isLoading ? <CircularProgress /> : <DeleteIcon fontSize="small" />}
-            </IconButton>
+            <Tooltip title="Delete Comment" placement="right">
+              <IconButton
+                onClick={removeCommentHandler}
+                size="small"
+                sx={{
+                  color: grey[500],
+                  display: editMode ? "none" : "in-line",
+                }}
+              >
+                {removeCommentResults.isLoading ? (
+                  <CircularProgress />
+                ) : (
+                  <DeleteIcon fontSize="small" />
+                )}
+              </IconButton>
+            </Tooltip>
 
-            <IconButton
-              onClick={editCommentToggleHandler}
-              size="small"
-              sx={{ color: grey[500], display: editMode ? "in-line" : "none" }}
-            >
-              <CancelIcon fontSize="small" />
-            </IconButton>
+            <Tooltip title="Cancel Edit" placement="right">
+              <IconButton
+                onClick={editCommentToggleHandler}
+                size="small"
+                sx={{
+                  color: grey[500],
+                  display: editMode ? "in-line" : "none",
+                }}
+              >
+                <CancelIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            
           </Stack>
         </ListItemSecondaryAction>
       </ListItem>
-      <Box display={editMode ? "block" : "none"} sx={{ bgcolor: red[50] }}>
-        <form onSubmit={submitEditCommentHandler}>
-          <TextField
-            label="Edit Mode"
-            value={editedComment}
-            onChange={editCommentChangeHandler}
-            sx={{
-              width: "95%",
-              padding: "10px",
-              bgcolor: red[50],
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <LoadingButton
-                    onClick={submitEditCommentHandler}
-                    loading={editCommentResults.isLoading}
-                    disabled={editedComment === ""}
-                  >
-                    <span>EDIT</span>
-                  </LoadingButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        </form>
-      </Box>
+      <CommentEdit comment={comment} editMode={editMode} />
       <Divider variant="inset" component="li" sx={{ width: "90%" }} />
     </>
   );

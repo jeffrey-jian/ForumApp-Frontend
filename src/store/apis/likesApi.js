@@ -42,7 +42,6 @@ const likesApi = createApi({
       }),
       removeLike: builder.mutation({
         invalidatesTags: (result, error, arg) => {
-          console.log("FROM removeLike:", arg);
           return [{ type: "Like", id: arg.id }];
         },
         query: (likeData) => {

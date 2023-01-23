@@ -7,7 +7,13 @@ import {
   changeTitle,
   changeText,
 } from "./slices/newPostSlice";
-import { feedPostsReducer, filterBy, searchBy } from "./slices/feedPostsSlice";
+import {
+  feedPostsReducer,
+  filterBy,
+  searchBy,
+  myPosts,
+  myLikes,
+} from "./slices/feedPostsSlice";
 
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import { commentsApi } from "./apis/commentsApi";
@@ -43,6 +49,8 @@ export {
   changeHeading,
   filterBy,
   searchBy,
+  myPosts,
+  myLikes,
   changeCategory,
   changeTitle,
   changeText,
