@@ -1,4 +1,4 @@
-import { List, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useFetchCommentsQuery } from "../store";
 import CommentCard from "./CommentCard";
 
@@ -11,7 +11,7 @@ function CommentsList({ post_id, user }) {
   } else if (error) {
     commentsList = <div>Error loading comments.</div>;
   } else {
-
+    console.log(data.payload.data);
     if (data.payload.data.length === 0) {
       commentsList = <Typography>No comments yet!</Typography>;
     } else {

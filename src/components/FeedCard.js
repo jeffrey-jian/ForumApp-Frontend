@@ -4,27 +4,28 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Checkbox,
+  CircularProgress,
   Collapse,
-  FormLabel,
   IconButton,
   List,
   Typography,
 } from "@mui/material";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import Favorite from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { grey, purple, red } from "@mui/material/colors";
-import { useState } from "react";
+import { grey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import NewCommentCard from "./NewCommentCard";
 import PostModal from "./PostModal";
 
+import { useState } from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
 import CommentsList from "./CommentsList";
 import { Stack } from "@mui/system";
 import { useRemovePostMutation } from "../store";
+import LikeButton from "./LikeButton";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -44,32 +45,33 @@ function FeedCard({ item, user }) {
 
   const [removePost, removePostResults] = useRemovePostMutation();
 
+  dayjs.extend(relativeTime);
   const id = item.id;
   const author_id = item.author_id;
   const author_username = item.author_username;
+  const author_avatarColor = item.author_avatarColor;
   const initial = author_username.slice(0, 1);
   const date_created = item.date_created;
+  const formatted_date = date_created ? dayjs(date_created).fromNow() : null;
   const title = item.title;
   const text = item.post_text;
   const category = item.category;
 
-
-//   <Stack sx={{ visibility: isActionShown ? "visible" : "hidden" }}>
-//   <IconButton onClick={onEditHandler}>
-//     <EditIcon />
-//   </IconButton>
-//   <IconButton onClick={onDeleteHandler}>
-//     <DeleteIcon />
-//   </IconButton>
-// </Stack>
-
+  //   <Stack sx={{ visibility: isActionShown ? "visible" : "hidden" }}>
+  //   <IconButton onClick={onEditHandler}>
+  //     <EditIcon />
+  //   </IconButton>
+  //   <IconButton onClick={onDeleteHandler}>
+  //     <DeleteIcon />
+  //   </IconButton>
+  // </Stack>
 
   const expandClickHandler = () => {
     setExpanded(!expanded);
   };
   const mouseEnterHandler = () => {
     // if (user.id === author_id) {
-      setIsActionShown(true);
+    setIsActionShown(true);
     // }
   };
   const mouseLeaveHandler = () => {
@@ -82,14 +84,17 @@ function FeedCard({ item, user }) {
     removePost(item);
   };
 
-  const sideActions = user.id === author_id ? (  <Stack sx={{ visibility: isActionShown ? "visible" : "hidden" }}>
-  <IconButton onClick={onEditHandler}>
-    <EditIcon />
-  </IconButton>
-  <IconButton onClick={onDeleteHandler}>
-    <DeleteIcon />
-  </IconButton>
-</Stack>) : null;
+  const sideActions =
+    user.id === author_id ? (
+      <Stack sx={{ visibility: isActionShown ? "visible" : "hidden" }}>
+        <IconButton onClick={onEditHandler}>
+          <EditIcon />
+        </IconButton>
+        <IconButton onClick={onDeleteHandler}>
+          {removePostResults.isLoading ? <CircularProgress /> : <DeleteIcon />}
+        </IconButton>
+      </Stack>
+    ) : null;
 
   return (
     <>
@@ -105,9 +110,11 @@ function FeedCard({ item, user }) {
         onMouseLeave={mouseLeaveHandler}
       >
         <CardHeader
-          avatar={<Avatar sx={{ bgcolor: purple[500] }}>{initial}</Avatar>}
+          avatar={
+            <Avatar sx={{ bgcolor: author_avatarColor }}>{initial}</Avatar>
+          }
           title={author_username}
-          subheader={category + "\t" + date_created}
+          subheader={category + "\t — " + formatted_date}
           action={sideActions}
         />
         <CardContent>
@@ -118,15 +125,9 @@ function FeedCard({ item, user }) {
             {text}
           </Typography>
         </CardContent>
-        <CardActions disableSpacing>
-          <IconButton>
-            <FormLabel>10</FormLabel>
-            <Checkbox
-              icon={<FavoriteBorder />}
-              checkedIcon={<Favorite sx={{ color: red[500] }} />}
-              // onChange=todo
-            />
-          </IconButton>
+        <CardActions>
+          <LikeButton post={item} user={user} />
+
           <ExpandMore expand={expanded} onClick={expandClickHandler}>
             <ExpandMoreIcon />
           </ExpandMore>

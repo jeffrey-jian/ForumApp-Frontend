@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 import { Button, Modal, Stack, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { changeUser, logIn } from "../store";
+import { useDispatch } from "react-redux";
+import { logIn } from "../store";
 import { useLazyFetchUserQuery } from "../store/apis/usersApi";
 
 const StyledModal = styled(Modal)({
@@ -19,40 +19,51 @@ function LoginModal({ openModal, closeModalHandler }) {
   const [trigger, result, lastPromiseInfo] = useLazyFetchUserQuery();
 
   useEffect(() => {
-    console.log("useEffect running");
-    console.log("lastPromiseInfo", lastPromiseInfo);
-    console.log("result", result);
-
     if (result.isFetching) {
       // do nothing
     } else if (result.isSuccess) {
       if (result.data.payload.data.length !== 0) {
         const { id, username } = result.data.payload.data[0];
+        const avatarColor = stringToColour(username);
         dispatch(
           logIn({
             id: id,
             username: username,
+            avatarColor: avatarColor,
           })
         );
         closeModalHandler();
       } else {
-        alert(`User ${usernameInput} has not been registered`);
+        alert(`User ${usernameInput} was not registered successfully. Please try again.`);
       }
     }
   }, [result.isFetching]);
 
-  // const username = useSelector((state) => {
-  //   return state.currentUser.name;
-  // });
+  /** stringToColour function below adapted from https://stackoverflow.com/ 
+   * questions/3426404/
+   * create-a-hexadecimal-colour-based-on-a-string-with-javascript
+   */
+  const stringToColour = (str) => {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    var colour = '#';
+    for (var i = 0; i < 3; i++) {
+      var value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
+  }
 
   const usernameInputChangeHandler = (event) => {
     setUsernameInput(event.target.value);
   };
   const isValid = usernameInput.length > 0;
 
-  const loginHandler = async (event) => {
-    console.log("logging in...");
-    trigger({ username: usernameInput });
+  const loginHandler = (event) => {
+    const avatarColor = stringToColour(usernameInput);
+    trigger({ username: usernameInput, avatarColor: avatarColor });
     // dispatch(logIn({
     //   id: result.data.payload.data[0].id,
     //   username: result.data.payload.data[0].username,

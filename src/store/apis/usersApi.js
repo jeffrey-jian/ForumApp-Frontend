@@ -13,6 +13,7 @@ const usersApi = createApi({
             url: `/users`,
             params: {
               username: loginInfo.username,
+              avatarColor: loginInfo.avatarColor,
             },
             method: "GET",
           };
@@ -29,17 +30,17 @@ const usersApi = createApi({
       //     };
       //   },
       // }),
-      addUser: builder.mutation({
-        query: (newUserInfo) => {
-          return {
-            method: "POST",
-            url: "users",
-            body: {
-              username: newUserInfo.username,
-            },
-          };
-        },
-      }),
+      // addUser: builder.mutation({
+      //   query: (newUserInfo) => {
+      //     return {
+      //       method: "POST",
+      //       url: "users",
+      //       body: {
+      //         username: newUserInfo.username,
+      //       },
+      //     };
+      //   },
+      // }),
     };
   },
 });

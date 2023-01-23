@@ -1,5 +1,6 @@
 import {
   Avatar,
+  CircularProgress,
   Divider,
   IconButton,
   InputAdornment,
@@ -17,16 +18,27 @@ import EditIcon from "@mui/icons-material/Edit";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useRemoveCommentMutation, useEditCommentMutation } from "../store";
 import { LoadingButton } from "@mui/lab";
-import { useState } from "react";
 import { Box } from "@mui/system";
+
+import { useState } from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 function CommentCard({ comment, user }) {
   const [removeComment, removeCommentResults] = useRemoveCommentMutation();
   const [editComment, editCommentResults] = useEditCommentMutation();
 
-  const { id, author_id, author_username, date_created, comment_text } =
-    comment;
+  dayjs.extend(relativeTime);
+  const {
+    id,
+    author_id,
+    author_username,
+    author_avatarColor,
+    date_created,
+    comment_text,
+  } = comment;
   const { id: user_id } = user;
+  const formatted_date = date_created ? dayjs(date_created).fromNow() : null;
 
   const [editMode, setEditMode] = useState(false);
   const [editedComment, setEditedComment] = useState(comment_text);
@@ -57,11 +69,11 @@ function CommentCard({ comment, user }) {
       <ListItem
         alignItems="flex-start"
         sx={{ bgcolor: editMode ? red[50] : "background.paper" }}
-        onMouseEnter = {() =>  setIsSecondaryShown(true)}
-        onMouseLeave = {() => setIsSecondaryShown(false)}
+        onMouseEnter={() => setIsSecondaryShown(true)}
+        onMouseLeave={() => setIsSecondaryShown(false)}
       >
         <ListItemAvatar>
-          <Avatar sx={{ bgcolor: red[500] }} alt={author_username}>
+          <Avatar sx={{ bgcolor: author_avatarColor }} alt={author_username}>
             {initial}
           </Avatar>
         </ListItemAvatar>
@@ -76,16 +88,17 @@ function CommentCard({ comment, user }) {
                 color="text.secondary"
                 marginRight={"10px"}
               >
-                {author_username} &#8212; {date_created}
+                {author_username} &#8212; {formatted_date}
               </Typography>
             </>
           }
         />
         <ListItemSecondaryAction
-          onMouseEnter = {() => setIsSecondaryShown(true)}
-          onMouseLeave = {() => setIsSecondaryShown(false)}
+          onMouseEnter={() => setIsSecondaryShown(true)}
+          onMouseLeave={() => setIsSecondaryShown(false)}
           sx={{
-            display: ((isSecondaryShown && user_id === author_id ? "block" : "none")),
+            display:
+              isSecondaryShown && user_id === author_id ? "block" : "none",
             margin: "0px",
           }}
         >
@@ -103,7 +116,7 @@ function CommentCard({ comment, user }) {
               size="small"
               sx={{ color: grey[500], display: editMode ? "none" : "in-line" }}
             >
-              <DeleteIcon fontSize="small" />
+              {removeCommentResults.isLoading ? <CircularProgress /> : <DeleteIcon fontSize="small" />}
             </IconButton>
 
             <IconButton

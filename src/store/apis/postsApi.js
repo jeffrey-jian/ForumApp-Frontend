@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
+
 const postsApi = createApi({
   reducerPath: "posts",
   baseQuery: fetchBaseQuery({
@@ -8,18 +9,19 @@ const postsApi = createApi({
   endpoints(builder) {
     return {
       fetchPosts: builder.query({
-        providesTags: (result, error, post) => {
+        providesTags: (result, error, conditions) => {
           const tags = result.payload.data.map((post) => {
             return { type: "Post", id: post.id };
           });
           tags.push("Feed");
           return tags;
         },
-        query: (filter) => {
+        query: (conditions) => {
           return {
             url: "/posts",
             params: {
-              filter: filter,
+              filter: conditions.filter,
+              searchTerm: conditions.searchTerm,
             },
             method: "GET",
           };

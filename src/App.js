@@ -10,20 +10,19 @@ function App() {
     return {
       user: state.currentUser,
     };
-    
   });
 
   return (
     <Box>
-      <Navbar user={user}/>
+      <Navbar user={user} />
       <Stack
         direction="row"
         spacing={2}
         justifyContent="space-between"
         marginTop="70px"
       >
-        <Sidebar user={user}/>
-        <Feed user={user}/>
+        <Sidebar user={user} />
+        <Feed user={user} />
         <Rightbar />
       </Stack>
     </Box>

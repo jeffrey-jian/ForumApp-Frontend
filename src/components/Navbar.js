@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import {
   AppBar,
@@ -12,11 +12,9 @@ import {
 } from "@mui/material";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import { Box } from "@mui/system";
-import { deepPurple } from "@mui/material/colors";
 import { useState } from "react";
 import LoginModal from "./LoginModal";
-import { logOut } from "../store";
-
+import { logOut, searchBy } from "../store";
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-between",
@@ -29,16 +27,13 @@ const Search = styled("div")(({ theme }) => ({
   width: "40%",
 }));
 
-// const Icons = styled(Box)(({ theme }) => ({
-//   display: "flex",
-//   gap: "20px",
-//   alignItems: "center",
-// }));
-
 function Navbar({ user }) {
   const dispatch = useDispatch();
+  const searchTerm = useSelector((state) => {
+    return state.feedPosts.searchTerm;
+  })
 
-  const { isLoggedIn, name: username } = user;
+  const { isLoggedIn, name: username, avatarColor } = user;
 
   const initial = isLoggedIn ? username.slice(0, 1) : null;
 
@@ -61,6 +56,10 @@ function Navbar({ user }) {
     setOpenModal(false);
   };
 
+  const searchTermChangeHandler = (event) => {
+    dispatch(searchBy(event.target.value));
+  }
+
   return (
     <>
       <AppBar sx={{ position: "fixed", top: 0 }}>
@@ -76,7 +75,7 @@ function Navbar({ user }) {
           </Box>
 
           <Search>
-            <InputBase placeholder="search..." />
+            <InputBase value={searchTerm} onChange={searchTermChangeHandler} fullWidth placeholder="search..." />
           </Search>
 
           <Button
@@ -85,7 +84,7 @@ function Navbar({ user }) {
             endIcon={
               isLoggedIn ? (
                 <Avatar
-                  sx={{ width: 30, height: 30, bgcolor: deepPurple[500] }}
+                  sx={{ width: 30, height: 30, bgcolor: avatarColor }}
                 >
                   {initial}
                 </Avatar>

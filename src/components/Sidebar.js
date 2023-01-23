@@ -20,7 +20,6 @@ function Sidebar({ user }) {
   const { isLoggedIn } = user;
 
   const buttonClickHandler = (event) => {
-    console.log(event.currentTarget.id);
     dispatch(filterBy(event.currentTarget.id));
   };
 
