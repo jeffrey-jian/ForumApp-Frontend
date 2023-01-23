@@ -1,4 +1,4 @@
-import { Container, Divider, List, ListItem } from "@mui/material";
+import { Divider, List, ListItem } from "@mui/material";
 import { Box } from "@mui/system";
 import NewPost from "./NewPost";
 import AllIcon from "@mui/icons-material/Public";

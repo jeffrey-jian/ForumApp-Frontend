@@ -11,8 +11,8 @@ import {
 
 function LikeButton({ post, user }) {
   const { data, error, isFetching } = useFetchLikesByPostQuery(post.id);
-  const [addLike, addLikeResults] = useAddLikeMutation();
-  const [removeLike, removeLikeResults] = useRemoveLikeMutation();
+  const [addLike] = useAddLikeMutation();
+  const [removeLike] = useRemoveLikeMutation();
 
   var likeCount;
   var likesData;

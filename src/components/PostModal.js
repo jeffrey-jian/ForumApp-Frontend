@@ -50,18 +50,17 @@ function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
     dispatch(changeTitle(og_title));
     dispatch(changeText(og_text));
   };
-  const resetFields = () => {
-    dispatch(changeCategory(""));
-    dispatch(changeTitle(""));
-    dispatch(changeText(""));
-  }
+
   const isValid = category !== "" && title !== "";
   
   useEffect(() => {
     switch (type) {
       case "new":
-        resetFields();
         dispatch(changeHeading("Create a Post"));
+        // resetting other fields
+        dispatch(changeCategory(""));
+        dispatch(changeTitle(""));
+        dispatch(changeText(""));
         break;
       case "edit":
         dispatch(changeHeading("Edit Post"));
@@ -70,6 +69,7 @@ function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
       default:
         console.warn("Error in PostModal.js: type unknown");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalOpen]);
 
 
