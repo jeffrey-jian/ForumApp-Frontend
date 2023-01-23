@@ -47,7 +47,23 @@ const postsApi = createApi({
           };
         },
       }),
-      editPost: builder.mutation({}),
+      editPost: builder.mutation({
+        invalidatesTags: (result, error, post) => {
+          return [{ type: "Post", id: post.id }];
+        },
+        query: (post) => {
+          return {
+            method: "PUT",
+            url: `/posts/${post.id}`,
+            body: {
+              id: post.id,
+              category: post.category,
+              title: post.title,
+              post_text: post.post_text,
+            }
+          }
+        }
+      }),
       removePost: builder.mutation({
         invalidatesTags: (result, error, post) => {
           return [{ type: "Post", id: post.id }];

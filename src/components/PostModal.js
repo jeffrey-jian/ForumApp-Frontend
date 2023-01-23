@@ -17,6 +17,7 @@ import {
   changeText,
   changeTitle,
   useAddPostMutation,
+  useEditPostMutation,
 } from "../store";
 
 function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
@@ -32,6 +33,7 @@ function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
   });
 
   const [addPost, addPostResults] = useAddPostMutation();
+  const [editPost, editPostResults] = useEditPostMutation();
 
   const categoryChangeHandler = (event) => {
     dispatch(changeCategory(event.target.value));
@@ -78,12 +80,22 @@ function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
   };
   const formSubmitHandler = (event) => {
     event.preventDefault();
-    addPost({
-      author_id: author_id,
-      category: category,
-      title: title,
-      post_text: text,
-    });
+    if (type === "new") {
+      addPost({
+        author_id: author_id,
+        category: category,
+        title: title,
+        post_text: text,
+      });
+    } else if (type === "edit") {
+      editPost({
+        id: originalPost.id,
+        category: category,
+        title: title,
+        post_text: text,
+      })
+    }
+   
     dispatch(changeCategory(""));
     dispatch(changeTitle(""));
     dispatch(changeText(""));
@@ -146,7 +158,7 @@ function PostModal({ type, isModalOpen, setIsModalOpen, originalPost }) {
           <LoadingButton
             onClick={formSubmitHandler}
             disabled={!isValid}
-            loading={addPostResults.isLoading}
+            loading={addPostResults.isLoading || editPostResults.isLoading}
             fullWidth
             variant="contained"
             sx={{ margin: "10px 0" }}
