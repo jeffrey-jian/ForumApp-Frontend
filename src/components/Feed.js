@@ -23,6 +23,7 @@ function Feed({ user }) {
     likedBy: likedBy,
   });
 
+  console.log("From feed", isLoading, data);
   if (isLoading) {
     return (
       <div>
@@ -34,20 +35,21 @@ function Feed({ user }) {
   if (error) {
     return <div>Error fetching data...</div>;
   }
+  if (data !== null) {
+    const posts = data.payload.data;
+    const feedList =
+      posts.length > 0 ? (
+        posts.map((item) => <FeedCard key={item.id} item={item} user={user} />)
+      ) : (
+        <p>No posts found!</p>
+      );
+      return (
+        <Box bgcolor={grey[100]} flex={4} p={2}>
+          {feedList}
+        </Box>
+      );
+  }
 
-  const posts = data.payload.data;
-  const feedList =
-    posts.length > 0 ? (
-      posts.map((item) => <FeedCard key={item.id} item={item} user={user} />)
-    ) : (
-      <p>No posts found!</p>
-    );
-
-  return (
-    <Box bgcolor={grey[100]} flex={4} p={2}>
-      {feedList}
-    </Box>
-  );
 }
 
 export default Feed;

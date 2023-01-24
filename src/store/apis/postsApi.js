@@ -4,15 +4,19 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 const postsApi = createApi({
   reducerPath: "posts",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000",
+    baseUrl: "https://jeffrey-forum-app.herokuapp.com/",
   }),
   endpoints(builder) {
     return {
       fetchPosts: builder.query({
         providesTags: (result, error, conditions) => {
-          const tags = result.payload.data.map((post) => {
-            return { type: "Post", id: post.id };
-          });
+          var tags = [];
+          if (result) {
+            tags = result.payload.data.map((post) => {
+              return { type: "Post", id: post.id };
+            });
+          }
+
           // for (var key in conditions) {
           //   tags.push({type: key, id: conditions[key]})
           // }
