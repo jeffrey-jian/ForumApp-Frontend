@@ -16,17 +16,17 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { grey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
+
 import CommentNew from "./CommentNew";
 import PostModal from "./PostModal";
-
-import { useState } from "react";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-
 import CommentsList from "./CommentsList";
 import { Stack } from "@mui/system";
 import { useRemovePostMutation } from "../store";
 import LikeButton from "./LikeButton";
+
+import { useState } from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -46,17 +46,19 @@ function FeedCard({ item, user }) {
 
   const [removePost, removePostResults] = useRemovePostMutation();
 
-  dayjs.extend(relativeTime);
   const id = item.id;
   const author_id = item.author_id;
   const author_username = item.author_username;
   const author_avatarColor = item.author_avatarColor;
   const initial = author_username.slice(0, 1);
   const date_created = item.date_created;
-  const formatted_date = date_created ? dayjs(date_created).fromNow() : null;
   const title = item.title;
   const text = item.post_text;
   const category = item.category;
+
+    // date in UTC time, +8 hours SG time
+    dayjs.extend(relativeTime);
+    const formatted_date = date_created ? dayjs(date_created).add(8, 'hour').fromNow() : null;
 
   const expandClickHandler = () => {
     setExpanded(!expanded);

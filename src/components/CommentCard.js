@@ -25,7 +25,6 @@ import CommentEdit from "./CommentEdit";
 function CommentCard({ comment, user }) {
   const [removeComment, removeCommentResults] = useRemoveCommentMutation();
 
-  dayjs.extend(relativeTime);
   const {
     id,
     author_id,
@@ -35,7 +34,10 @@ function CommentCard({ comment, user }) {
     comment_text,
   } = comment;
   const { id: user_id } = user;
-  const formatted_date = date_created ? dayjs(date_created).fromNow() : null;
+
+  // date in UTC time, +8 hours SG time
+  dayjs.extend(relativeTime);
+  const formatted_date = date_created ? dayjs(date_created).add(8, 'hour').fromNow() : null;
 
   const [editMode, setEditMode] = useState(false);
   const [isSecondaryShown, setIsSecondaryShown] = useState(false);
