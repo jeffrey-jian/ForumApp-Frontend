@@ -1,6 +1,5 @@
 import {
   Avatar,
-  CircularProgress,
   Divider,
   IconButton,
   ListItem,
@@ -14,6 +13,7 @@ import {
 import { grey, red } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useRemoveCommentMutation } from "../store";
 
@@ -113,7 +113,7 @@ function CommentCard({ comment, user }) {
                 }}
               >
                 {removeCommentResults.isLoading ? (
-                  <CircularProgress fontSize="small"/>
+                  <HourglassBottomIcon fontSize="small"/>
                 ) : (
                   <DeleteIcon fontSize="small" />
                 )}
