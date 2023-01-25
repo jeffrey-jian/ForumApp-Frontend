@@ -5,6 +5,7 @@ import { useFetchPostsQuery } from "../store";
 import FeedCard from "./FeedCard";
 
 function Feed({ user }) {
+  
   const { filter, searchTerm, author, likedBy } = useSelector((state) => {
     return {
       filter: state.feedPosts.filter,
@@ -13,8 +14,6 @@ function Feed({ user }) {
       likedBy: state.feedPosts.likedBy,
     };
   });
-
-
 
   const { data, error, isLoading } = useFetchPostsQuery({
     filter: filter,

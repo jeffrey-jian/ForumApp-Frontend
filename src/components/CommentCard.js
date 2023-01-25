@@ -113,7 +113,7 @@ function CommentCard({ comment, user }) {
                 }}
               >
                 {removeCommentResults.isLoading ? (
-                  <CircularProgress />
+                  <CircularProgress fontSize="small"/>
                 ) : (
                   <DeleteIcon fontSize="small" />
                 )}

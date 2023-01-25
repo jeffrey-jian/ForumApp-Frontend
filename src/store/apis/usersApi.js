@@ -1,5 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
+/**
+ * methods:
+ *  fetchUsers
+ */
+
+
 const usersApi = createApi({
   reducerPath: "users",
   baseQuery: fetchBaseQuery({
@@ -19,31 +25,9 @@ const usersApi = createApi({
           };
         },
       }),
-      // loginUser: builder.mutation({
-      //   query: (loginInfo) => {
-      //     return {
-      //       method: "POST",
-      //       url: "users",
-      //       body: {
-      //         username: loginInfo.username,
-      //       },
-      //     };
-      //   },
-      // }),
-      // addUser: builder.mutation({
-      //   query: (newUserInfo) => {
-      //     return {
-      //       method: "POST",
-      //       url: "users",
-      //       body: {
-      //         username: newUserInfo.username,
-      //       },
-      //     };
-      //   },
-      // }),
     };
   },
 });
 
-export const { useLazyFetchUserQuery, useAddUserMutation } = usersApi;
+export const { useLazyFetchUserQuery } = usersApi;
 export { usersApi };

@@ -1,5 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
+/**
+ * methods:
+ *  fetchLikes
+ *  addLikes
+ *  editLikes
+ *  removeLikes
+ */
+
+
 const likesApi = createApi({
   reducerPath: "likes",
   baseQuery: fetchBaseQuery({

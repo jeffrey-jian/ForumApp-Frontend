@@ -1,5 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+/**
+ * methods:
+ *  fetchComments
+ *  addComment
+ *  editComment
+ *  removeComment
+ */
+
+
 const commentsApi = createApi({
   reducerPath: "comments",
   baseQuery: fetchBaseQuery({

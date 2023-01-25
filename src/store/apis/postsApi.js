@@ -1,5 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
+/**
+ * methods:
+ *  fetchPosts
+ *  addPosts
+ *  editPosts
+ *  removePosts
+ */
+
 
 const postsApi = createApi({
   reducerPath: "posts",

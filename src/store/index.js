@@ -73,4 +73,4 @@ export {
   useAddLikeMutation,
   useRemoveLikeMutation,
 } from "./apis/likesApi";
-export { useLazyFetchUserQuery, useAddUserMutation } from "./apis/usersApi";
+export { useLazyFetchUserQuery } from "./apis/usersApi";

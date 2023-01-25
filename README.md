@@ -26,4 +26,5 @@ As part of the NUS Computing CVWO's Winter Assignment: *Gossip with Go/Rails*, I
  - React
  - Redux
  - React Hooks
+ - Material UI Library
 
